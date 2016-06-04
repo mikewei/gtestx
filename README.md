@@ -28,7 +28,7 @@ PERF_TEST(SimpleTest, SysCallPerf)
 We can run it as normal gtest tests:
 
 ```
-$ ./gtestx\_examples --gtest\_filter='SimpleTest*'
+$ ./gtestx_examples --gtest_filter='SimpleTest*'
 [==========] Running 2 tests from 1 test case.
 [----------] Global test environment set-up.
 [----------] 2 tests from SimpleTest
