@@ -1,18 +1,17 @@
-#include <sys/types.h>
-#include <unistd.h>
 #include <map>
 #include "gtestx/gtestx.h"
 
 class StdMapTest : public testing::Test
 {
 protected:
+  virtual ~StdMapTest() {}
   virtual void SetUp() override {
     for (int i = 0; i < 1000; i++) {
       map_.emplace(i, 1);
     }
   }
-  virtual void TearDown() override {
-  }
+  virtual void TearDown() override {}
+
   std::map<int,int> map_;
 };
 
