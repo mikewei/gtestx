@@ -115,7 +115,7 @@ Or run within bazel:
 Also GTESTX supply two more command line options:
 
 	-hz CALLS_PER_SECOND
-  -time RUNNING_MILLISECONDS
+	-time RUNNING_MILLISECONDS
 
 For example if you want run SimpleTest with 10000 times/sec for 10 seconds, use commonds bellow:
 
