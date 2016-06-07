@@ -47,6 +47,29 @@ $ ./gtestx_examples --gtest_filter='SimpleTest*'
 [  PASSED  ] 2 tests.
 ```
 
+Another example:
+
+```
+class StdMapTest : public testing::Test
+{
+protected:
+  virtual ~StdMapTest() {}
+  virtual void SetUp() override {
+    for (int i = 0; i < 1000; i++) {
+      map_.emplace(i, 1);
+    }
+  }
+  virtual void TearDown() override {}
+
+  std::map<int,int> map_;
+};
+
+PERF_TEST_F(StdMapTest, FindPerf)
+{
+  map_.find(999);
+}
+```
+
 ### Macros
 
 Almost all gtest macro has a GTESTX version:
