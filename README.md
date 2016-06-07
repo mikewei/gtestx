@@ -1,6 +1,6 @@
 ## GTESTX - A C++ benchmark extension for gtest
 
-Benchmark or performance-testing is often as important as unit test in many environment such as server side development. GTESTX is a convenient and simple C++ tool to do benchmark. It is based on gtest framework, so if you are familiar with gtest you can write benchmark code easily only by knowing some extended macros.
+Benchmark or performance-testing is often as important as unit test in many environment such as server side development. GTESTX is just a convenient and simple C++ benchmark tool. It is based on gtest framework, so if you are familiar with gtest you can write benchmark code easily only by knowing some extended macros.
 
 ### Examples
 
