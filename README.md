@@ -49,7 +49,7 @@ $ ./gtestx_examples --gtest_filter='SimpleTest*'
 
 Another example:
 
-```
+```C++
 class StdMapTest : public testing::Test
 {
 protected:
