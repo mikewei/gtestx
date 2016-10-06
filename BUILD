@@ -2,15 +2,15 @@ package(default_visibility = ["//visibility:public"])
 
 cc_library(
 	name = "gtestx",
-	includes = ["include"],
+	includes = ["src"],
 	copts = [
 		"-g",
 		"-Wall",
 	],
 	linkstatic = 1,
 	srcs = glob([
-		"src/*.cc",
-		"src/*.h",
+		"src/gtestx/gtestx.cc",
+		"src/gtestx/gtestx.h",
 	]),
 	deps = [
 		"//third_party/gtest-170",
