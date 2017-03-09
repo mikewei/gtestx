@@ -44,6 +44,12 @@
  * - {ALL_ABOVE}_OPT
  */
 
+// conform to Semantic Versioning (http://semver.org)
+#define MAJOR_VERSION 1
+#define MINOR_VERSION 0
+#define PATCH_VERSION 0
+#define PRERLEASE_VERSION beta
+
 #define PERF_ABORT (Perf::Abort(), "Perf loop aborted!")
 
 ///////////////////////////////////////////////
