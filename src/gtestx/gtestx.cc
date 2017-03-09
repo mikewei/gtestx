@@ -34,8 +34,8 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
-#include <thread>
-#include "gtestx.h"
+#include <thread>  // NOLINT
+#include "gtestx/gtestx.h"
 
 #define TV2US(ptv) ((ptv)->tv_sec * 1000000 + (ptv)->tv_usec)
 
@@ -44,13 +44,13 @@ DEFINE_uint64(time, 1500, "testing time long (ms)");
 
 namespace {
 
-class TokenBucket
-{
-public:
+class TokenBucket {
+ public:
   TokenBucket(uint32_t tokens_per_sec, uint32_t bucket_size, uint32_t init_tokens);
   void Gen(struct timeval *tv_now = NULL);
   bool Get(uint32_t need_tokens);
-private:
+
+ private:
   uint32_t tokens_per_sec_;
   uint32_t bucket_size_;
   int64_t token_count_;
@@ -58,8 +58,9 @@ private:
   uint64_t last_calc_delta_;
 };
 
-TokenBucket::TokenBucket(uint32_t tokens_per_sec, uint32_t bucket_size, uint32_t init_tokens)
-{
+TokenBucket::TokenBucket(uint32_t tokens_per_sec,
+                         uint32_t bucket_size,
+                         uint32_t init_tokens) {
   struct timeval tv;
   tokens_per_sec_ = tokens_per_sec;
   bucket_size_ = bucket_size;
@@ -69,8 +70,7 @@ TokenBucket::TokenBucket(uint32_t tokens_per_sec, uint32_t bucket_size, uint32_t
   last_calc_delta_ = 0;
 }
 
-void TokenBucket::Gen(struct timeval *tv_now)
-{
+void TokenBucket::Gen(struct timeval *tv_now) {
   struct timeval tv;
   uint64_t us_now, us_past;
   uint64_t new_tokens, calc_delta;
@@ -105,8 +105,7 @@ void TokenBucket::Gen(struct timeval *tv_now)
   return;
 }
 
-bool TokenBucket::Get(uint32_t need_tokens)
-{
+bool TokenBucket::Get(uint32_t need_tokens) {
   if (token_count_ < (int64_t)need_tokens) {
     return false;
   }
@@ -114,57 +113,56 @@ bool TokenBucket::Get(uint32_t need_tokens)
   return true;
 }
 
-} // anonymous namespace
+}  // anonymous namespace
 
 namespace gtestx {
 
-void Perf::Run()
-{
-	struct timeval tv_begin, tv_end, tv_use;
-	unsigned long long count = 0;
+void Perf::Run() {
+  struct timeval tv_begin, tv_end, tv_use;
+  unsigned long long count = 0;  // NOLINT
 
-	stop_ = false;
-	hz_ = FLAGS_hz;
-	time_ = FLAGS_time;
+  stop_ = false;
+  hz_ = FLAGS_hz;
+  time_ = FLAGS_time;
 
-	TokenBucket tb(hz_, hz_/5, hz_/500);
-	std::thread alarm([this] {
-		int unit = 10;
-		for (int ms = time_; !stop_ && ms > 0; ms -= unit)
-			std::this_thread::sleep_for(std::chrono::milliseconds(ms > unit ? unit : ms));
-		stop_ = true;
-	});
+  TokenBucket tb(hz_, hz_/5, hz_/500);
+  std::thread alarm([this] {
+    int unit = 10;
+    for (int ms = time_; !stop_ && ms > 0; ms -= unit)
+      std::this_thread::sleep_for(std::chrono::milliseconds(ms > unit ? unit : ms));
+    stop_ = true;
+  });
 
-	gettimeofday(&tv_begin, NULL);
+  gettimeofday(&tv_begin, NULL);
 
-	while (!stop_) {
-		if (!hz_ || tb.Get(1)) {
-			TestCode();
-			count++;
-		} else {
-			usleep(1000);
-			tb.Gen();
-		}
-	}
+  while (!stop_) {
+    if (!hz_ || tb.Get(1)) {
+      TestCode();
+      count++;
+    } else {
+      usleep(1000);
+      tb.Gen();
+    }
+  }
 
-	gettimeofday(&tv_end, NULL);
-	timersub(&tv_end, &tv_begin, &tv_use);
+  gettimeofday(&tv_end, NULL);
+  timersub(&tv_end, &tv_begin, &tv_use);
 
-	setlocale(LC_ALL, "");
-	printf("      count: %'llu\n", count);
-	printf("       time: %'d.%06d s\n", (int)tv_use.tv_sec, (int)tv_use.tv_usec);
-	printf("         HZ: %'f\n", count/(tv_use.tv_sec+0.000001*tv_use.tv_usec));
-	printf("       1/HZ: %'.9f s\n", (tv_use.tv_sec+0.000001*tv_use.tv_usec)/count);
+  setlocale(LC_ALL, "");
+  printf("      count: %'llu\n", count);
+  printf("       time: %'d.%06d s\n", static_cast<int>(tv_use.tv_sec),
+                                      static_cast<int>(tv_use.tv_usec));
+  printf("         HZ: %'f\n", count/(tv_use.tv_sec+0.000001*tv_use.tv_usec));
+  printf("       1/HZ: %'.9f s\n", (tv_use.tv_sec+0.000001*tv_use.tv_usec)/count);
 
-	alarm.join();
+  alarm.join();
 }
 
-void Perf::Abort()
-{
-	stop_ = true;
+void Perf::Abort() {
+  stop_ = true;
 }
 
-}
+}  // namespace gtestx
 
 PERF_TEST_MAIN
 
