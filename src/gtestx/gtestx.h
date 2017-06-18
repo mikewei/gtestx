@@ -48,7 +48,7 @@
 #define GTESTX_MAJOR_VERSION 1
 #define GTESTX_MINOR_VERSION 0
 #define GTESTX_PATCH_VERSION 0
-#define GTESTX_PRERLEASE_VERSION beta
+#define GTESTX_PRERLEASE_VERSION beta2
 
 #define PERF_ABORT (Perf::Abort(), "Perf loop aborted!")
 
