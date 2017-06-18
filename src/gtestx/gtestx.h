@@ -265,8 +265,6 @@ class Perf {
   virtual ~Perf() {}
   virtual void TestCode() = 0;
   void Run();
-
- protected:
   void Abort();
 
  private:
